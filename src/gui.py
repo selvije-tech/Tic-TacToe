@@ -32,23 +32,11 @@ class TicTacToeBoard(tk.Tk):
         grid_frame.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
         self._create_board_grid(grid_frame)
 
-        # Frame for the control buttons (right side)
-        control_frame = tk.Frame(master=main_frame)
-        control_frame.pack(side=tk.RIGHT, padx=10, pady=10, fill=tk.Y)
-        self._create_control_buttons(control_frame)
-
-        # Frame for the score display
-        score_frame = tk.Frame(master=main_frame)
-        score_frame.pack(side=tk.TOP, fill=tk.X, pady=5)
-        self.score_display = tk.Label(
-            master=score_frame,
-            text=self._get_score_text(),
-            font=font.Font(size=24, weight="bold"),
-            bg="lightgrey",
-            padx=10,
-            pady=10
-        )
-        self.score_display.pack()
+        # Frame for the control buttons and score display (right side)
+        right_frame = tk.Frame(master=main_frame)
+        right_frame.pack(side=tk.RIGHT, padx=10, pady=10, fill=tk.Y)
+        self._create_score_display(right_frame)
+        self._create_control_buttons(right_frame)
 
     def _create_board_grid(self, master):
         for row in range(self._game.board_size):
@@ -71,19 +59,20 @@ class TicTacToeBoard(tk.Tk):
                 button.bind("<ButtonPress-1>", self.play)
                 button.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
 
-    def _create_control_buttons(self, master):
-        self.score_button = tk.Button(
+    def _create_score_display(self, master):
+        self.score_display = tk.Label(
             master=master,
-            text="Score",
-            font=font.Font(size=16, weight="bold"),
+            text=self._get_score_text(),
+            font=font.Font(size=24, weight="bold"),
             bg="lightblue",
             fg="black",
-            command=self._update_score_display,
-            relief="raised",
-            bd=2
+            padx=10,
+            pady=10
         )
-        self.score_button.pack(pady=5)
+        self.score_display.pack(pady=10, fill=tk.X)
 
+    def _create_control_buttons(self, master):
+        # Play Again button
         self.play_again_button = tk.Button(
             master=master,
             text="Play Again",
@@ -94,8 +83,9 @@ class TicTacToeBoard(tk.Tk):
             relief="raised",
             bd=2
         )
-        self.play_again_button.pack(pady=5)
+        self.play_again_button.pack(pady=10, fill=tk.X)
 
+        # Exit button
         self.exit_button = tk.Button(
             master=master,
             text="Exit",
@@ -106,7 +96,7 @@ class TicTacToeBoard(tk.Tk):
             relief="raised",
             bd=2
         )
-        self.exit_button.pack(pady=5)
+        self.exit_button.pack(pady=10, fill=tk.X)
 
     def play(self, event):
         clicked_btn = event.widget

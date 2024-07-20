@@ -1,6 +1,7 @@
 from itertools import cycle
 from typing import NamedTuple, List, Tuple
 
+
 class Player(NamedTuple):
     label: str
     color: str
