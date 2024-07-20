@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import font
-from .game import TicTacToeGame
-from .move import Move
+from .game import TicTacToeGame, Move
 
 class TicTacToeBoard(tk.Tk):
     def __init__(self, game: TicTacToeGame):
@@ -9,59 +8,105 @@ class TicTacToeBoard(tk.Tk):
         self.title("Tic-Tac-Toe Game")
         self._cells = {}
         self._game = game
-        self._create_menu()
-        self._create_board_display()
-        self._create_board_grid()
-        self._create_score_display()
+        self._create_layout()
 
-    def _create_menu(self):
-        menu_bar = tk.Menu(master=self)
-        self.config(menu=menu_bar)
-        file_menu = tk.Menu(master=menu_bar)
-        file_menu.add_command(label="Play Again", command=self.reset_board)
-        file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=quit)
-        menu_bar.add_cascade(label="File", menu=file_menu)
+    def _create_layout(self):
+        main_frame = tk.Frame(master=self)
+        main_frame.pack(fill=tk.BOTH, expand=True)
 
-    def _create_board_display(self):
-        display_frame = tk.Frame(master=self)
-        display_frame.pack(fill=tk.X)
+        # Top display with game status
+        top_frame = tk.Frame(master=main_frame)
+        top_frame.pack(side=tk.TOP, fill=tk.X, pady=10)
         self.display = tk.Label(
-            master=display_frame,
-            text="Ready?",
+            master=top_frame,
+            text="Tic-Tac-Toe - Ready?",
             font=font.Font(size=28, weight="bold"),
+            bg="lightgrey",
+            padx=10,
+            pady=10
         )
         self.display.pack()
 
-    def _create_score_display(self):
-        score_frame = tk.Frame(master=self)
-        score_frame.pack(fill=tk.X)
+        # Frame for the grid (left side)
+        grid_frame = tk.Frame(master=main_frame)
+        grid_frame.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
+        self._create_board_grid(grid_frame)
+
+        # Frame for the control buttons (right side)
+        control_frame = tk.Frame(master=main_frame)
+        control_frame.pack(side=tk.RIGHT, padx=10, pady=10, fill=tk.Y)
+        self._create_control_buttons(control_frame)
+
+        # Frame for the score display
+        score_frame = tk.Frame(master=main_frame)
+        score_frame.pack(side=tk.TOP, fill=tk.X, pady=5)
         self.score_display = tk.Label(
             master=score_frame,
             text=self._get_score_text(),
             font=font.Font(size=24, weight="bold"),
+            bg="lightgrey",
+            padx=10,
+            pady=10
         )
         self.score_display.pack()
 
-    def _create_board_grid(self):
-        grid_frame = tk.Frame(master=self)
-        grid_frame.pack()
+    def _create_board_grid(self, master):
         for row in range(self._game.board_size):
-            self.rowconfigure(row, weight=1, minsize=50)
-            self.columnconfigure(row, weight=1, minsize=75)
+            master.rowconfigure(row, weight=1)
+            master.columnconfigure(row, weight=1)
             for col in range(self._game.board_size):
                 button = tk.Button(
-                    master=grid_frame,
+                    master=master,
                     text="",
-                    font=font.Font(size=36, weight="bold"),
+                    font=font.Font(size=24, weight="bold"),
                     fg="black",
-                    width=3,
+                    bg="white",
+                    width=4,
                     height=2,
                     highlightbackground="lightblue",
+                    relief="raised",
+                    bd=2
                 )
                 self._cells[button] = (row, col)
                 button.bind("<ButtonPress-1>", self.play)
                 button.grid(row=row, column=col, padx=5, pady=5, sticky="nsew")
+
+    def _create_control_buttons(self, master):
+        self.score_button = tk.Button(
+            master=master,
+            text="Score",
+            font=font.Font(size=16, weight="bold"),
+            bg="lightblue",
+            fg="black",
+            command=self._update_score_display,
+            relief="raised",
+            bd=2
+        )
+        self.score_button.pack(pady=5)
+
+        self.play_again_button = tk.Button(
+            master=master,
+            text="Play Again",
+            font=font.Font(size=16, weight="bold"),
+            bg="lightgreen",
+            fg="black",
+            command=self.reset_board,
+            relief="raised",
+            bd=2
+        )
+        self.play_again_button.pack(pady=5)
+
+        self.exit_button = tk.Button(
+            master=master,
+            text="Exit",
+            font=font.Font(size=16, weight="bold"),
+            bg="salmon",
+            fg="white",
+            command=self.quit,
+            relief="raised",
+            bd=2
+        )
+        self.exit_button.pack(pady=5)
 
     def play(self, event):
         clicked_btn = event.widget
@@ -101,7 +146,7 @@ class TicTacToeBoard(tk.Tk):
 
     def reset_board(self):
         self._game.reset_game()
-        self._update_display(msg="Ready?")
+        self._update_display(msg="Tic-Tac-Toe - Ready?")
         self._update_score_display()
         for button in self._cells.keys():
             button.config(highlightbackground="lightblue")
@@ -111,4 +156,3 @@ class TicTacToeBoard(tk.Tk):
     def _get_score_text(self):
         scores = self._game.scores
         return f"Scores - X: {scores['X']}  O: {scores['O']}"
-
