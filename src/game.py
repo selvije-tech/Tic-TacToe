@@ -1,16 +1,10 @@
 from itertools import cycle
-from typing import NamedTuple
-
-class Player(NamedTuple):
-    label: str
-    color: str
-
-class Move(NamedTuple):
-    row: int
-    col: int
-    label: str = ""
+from typing import List, Tuple
+from .player import Player
+from .move import Move
 
 BOARD_SIZE = 3
+
 DEFAULT_PLAYERS = (
     Player(label="X", color="blue"),
     Player(label="O", color="green"),
@@ -21,10 +15,11 @@ class TicTacToeGame:
         self._players = cycle(players)
         self.board_size = board_size
         self.current_player = next(self._players)
-        self.winner_combo = []
-        self._current_moves = []
+        self.winner_combo: List[Tuple[int, int]] = []
+        self._current_moves: List[List[Move]] = []
         self._has_winner = False
         self._winning_combos = []
+        self.scores = {player.label: 0 for player in players}
         self._setup_board()
 
     def _setup_board(self):
@@ -62,6 +57,7 @@ class TicTacToeGame:
             if is_win:
                 self._has_winner = True
                 self.winner_combo = combo
+                self.scores[self.current_player.label] += 1
                 break
 
     def has_winner(self):
