@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font
-from .game import TicTacToeGame, Move
+from game import TicTacToeGame, Move
+
 
 class TicTacToeBoard(tk.Tk):
     def __init__(self, game: TicTacToeGame):

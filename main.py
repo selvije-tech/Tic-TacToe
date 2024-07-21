@@ -1,6 +1,7 @@
 from src.game import TicTacToeGame
 from src.gui import TicTacToeBoard
 
+
 def main():
     game = TicTacToeGame()
     board = TicTacToeBoard(game)
