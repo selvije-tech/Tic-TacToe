@@ -19,12 +19,6 @@ Tic-Tac-Toe/
 │   ├── __init__.py
 │   ├── test_game.py
 │   ├── test_gui.py
-├── .vscode/
-│   ├── settings.json
-├── .pytest_cache/
-│   ├── CACHEDIR.TAG
-│   ├── README.md
-│   └── v/
 ├── venv/
 │   ├── (virtual environment files)
 ├── tic_tac_toe.py
