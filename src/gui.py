@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import font
-from .game import TicTacToeGame,Move
+from .game import TicTacToeGame, Move
 
 import pygame
+
 
 class TicTacToeBoard(tk.Tk):
     def __init__(self, game: TicTacToeGame):
@@ -10,7 +11,7 @@ class TicTacToeBoard(tk.Tk):
         self.title("Tic-Tac-Toe Game")
         self._cells = {}
         self._game = game
-        
+
         pygame.mixer.init()
         self._load_sounds()
         self._create_layout()
@@ -21,7 +22,6 @@ class TicTacToeBoard(tk.Tk):
         self.tied_sound = pygame.mixer.Sound("sounds/tied.mp3")
         self.reset_sound = pygame.mixer.Sound("sounds/reset.mp3")
 
-
     def _create_layout(self):
         main_frame = tk.Frame(master=self)
         main_frame.pack(fill=tk.BOTH, expand=True)
@@ -30,11 +30,11 @@ class TicTacToeBoard(tk.Tk):
         top_frame.pack(side=tk.TOP, fill=tk.X, pady=10)
         self.display = tk.Label(
             master=top_frame,
-            text="Tic-Tac-Toe - Ready?",
+            text="Tic-Tac-Toe - Play ",
             font=font.Font(size=28, weight="bold"),
             bg="lightgrey",
             padx=10,
-            pady=10
+            pady=10,
         )
         self.display.pack()
 
@@ -62,7 +62,7 @@ class TicTacToeBoard(tk.Tk):
                     height=2,
                     highlightbackground="lightblue",
                     relief="raised",
-                    bd=2
+                    bd=2,
                 )
                 self._cells[button] = (row, col)
                 button.bind("<ButtonPress-1>", self.play)
@@ -76,7 +76,7 @@ class TicTacToeBoard(tk.Tk):
             bg="lightblue",
             fg="black",
             padx=10,
-            pady=10
+            pady=10,
         )
         self.score_display.pack(pady=10, fill=tk.X)
 
@@ -89,7 +89,7 @@ class TicTacToeBoard(tk.Tk):
             fg="black",
             command=self.reset_board,
             relief="raised",
-            bd=2
+            bd=2,
         )
         self.play_again_button.pack(pady=10, fill=tk.X)
 
@@ -101,7 +101,7 @@ class TicTacToeBoard(tk.Tk):
             fg="white",
             command=self.quit,
             relief="raised",
-            bd=2
+            bd=2,
         )
         self.exit_button.pack(pady=10, fill=tk.X)
 

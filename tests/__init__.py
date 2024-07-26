@@ -1,5 +1,5 @@
-import os 
-import sys 
+import os
+import sys
 
 from tests.test_game import *
 from tests.test_gui import *

@@ -8,10 +8,10 @@ class Move(NamedTuple):
     label: str = ""
 
 
-
 class Player(NamedTuple):
     label: str
     color: str
+
 
 BOARD_SIZE = 3
 
@@ -19,6 +19,7 @@ DEFAULT_PLAYERS = (
     Player(label="X", color="blue"),
     Player(label="O", color="green"),
 )
+
 
 class TicTacToeGame:
     def __init__(self, players=DEFAULT_PLAYERS, board_size=BOARD_SIZE):
@@ -40,10 +41,7 @@ class TicTacToeGame:
         self._winning_combos = self._get_winning_combos()
 
     def _get_winning_combos(self):
-        rows = [
-            [(move.row, move.col) for move in row]
-            for row in self._current_moves
-        ]
+        rows = [[(move.row, move.col) for move in row] for row in self._current_moves]
         columns = [list(col) for col in zip(*rows)]
         first_diagonal = [row[i] for i, row in enumerate(rows)]
         second_diagonal = [col[j] for j, col in enumerate(reversed(columns))]
@@ -75,9 +73,7 @@ class TicTacToeGame:
 
     def is_tied(self):
         no_winner = not self._has_winner
-        played_moves = (
-            move.label for row in self._current_moves for move in row
-        )
+        played_moves = (move.label for row in self._current_moves for move in row)
         return no_winner and all(played_moves)
 
     def reset_game(self):

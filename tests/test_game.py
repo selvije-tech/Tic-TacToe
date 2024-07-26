@@ -3,10 +3,11 @@ import os
 import unittest
 import pytest
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 
 
 from game import TicTacToeGame, Move
+
 
 class TestTicTacToeGame(unittest.TestCase):
     def setUp(self):
@@ -24,9 +25,11 @@ class TestTicTacToeGame(unittest.TestCase):
 
     def test_winner(self):
         moves = [
-            Move(0, 0, "X"), Move(1, 0, "O"),
-            Move(0, 1, "X"), Move(1, 1, "O"),
-            Move(0, 2, "X")
+            Move(0, 0, "X"),
+            Move(1, 0, "O"),
+            Move(0, 1, "X"),
+            Move(1, 1, "O"),
+            Move(0, 2, "X"),
         ]
         for move in moves:
             self.game.process_move(move)
@@ -36,15 +39,22 @@ class TestTicTacToeGame(unittest.TestCase):
 
     def test_tied_game(self):
         moves = [
-            Move(0, 0, "X"), Move(0, 1, "O"), Move(0, 2, "X"),
-            Move(1, 0, "X"), Move(1, 1, "X"), Move(1, 2, "O"),
-            Move(2, 0, "O"), Move(2, 1, "X"), Move(2, 2, "O")
+            Move(0, 0, "X"),
+            Move(0, 1, "O"),
+            Move(0, 2, "X"),
+            Move(1, 0, "X"),
+            Move(1, 1, "X"),
+            Move(1, 2, "O"),
+            Move(2, 0, "O"),
+            Move(2, 1, "X"),
+            Move(2, 2, "O"),
         ]
         for move in moves:
             self.game.process_move(move)
             self.game.toggle_player()
         self.assertFalse(self.game.has_winner())
         self.assertTrue(self.game.is_tied())
+
 
 if __name__ == "__main__":
     pytest.main()
