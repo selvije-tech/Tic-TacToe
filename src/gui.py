@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import font
-from game import TicTacToeGame, Move
+from .game import TicTacToeGame,Move
 
+import pygame
 
 class TicTacToeBoard(tk.Tk):
     def __init__(self, game: TicTacToeGame):
@@ -9,13 +10,22 @@ class TicTacToeBoard(tk.Tk):
         self.title("Tic-Tac-Toe Game")
         self._cells = {}
         self._game = game
+        
+        pygame.mixer.init()
+        self._load_sounds()
         self._create_layout()
+
+    def _load_sounds(self):
+        self.click_sound = pygame.mixer.Sound("sounds/move.wav")
+        self.win_sound = pygame.mixer.Sound("sounds/win.mp3")
+        self.tied_sound = pygame.mixer.Sound("sounds/tied.mp3")
+        self.reset_sound = pygame.mixer.Sound("sounds/reset.mp3")
+
 
     def _create_layout(self):
         main_frame = tk.Frame(master=self)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Top display with game status
         top_frame = tk.Frame(master=main_frame)
         top_frame.pack(side=tk.TOP, fill=tk.X, pady=10)
         self.display = tk.Label(
@@ -28,12 +38,10 @@ class TicTacToeBoard(tk.Tk):
         )
         self.display.pack()
 
-        # Frame for the grid (left side)
         grid_frame = tk.Frame(master=main_frame)
         grid_frame.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
         self._create_board_grid(grid_frame)
 
-        # Frame for the control buttons and score display (right side)
         right_frame = tk.Frame(master=main_frame)
         right_frame.pack(side=tk.RIGHT, padx=10, pady=10, fill=tk.Y)
         self._create_score_display(right_frame)
@@ -73,7 +81,6 @@ class TicTacToeBoard(tk.Tk):
         self.score_display.pack(pady=10, fill=tk.X)
 
     def _create_control_buttons(self, master):
-        # Play Again button
         self.play_again_button = tk.Button(
             master=master,
             text="Play Again",
@@ -86,7 +93,6 @@ class TicTacToeBoard(tk.Tk):
         )
         self.play_again_button.pack(pady=10, fill=tk.X)
 
-        # Exit button
         self.exit_button = tk.Button(
             master=master,
             text="Exit",
@@ -104,16 +110,19 @@ class TicTacToeBoard(tk.Tk):
         row, col = self._cells[clicked_btn]
         move = Move(row, col, self._game.current_player.label)
         if self._game.is_valid_move(move):
+            self._play_sound(self.click_sound)
             self._update_button(clicked_btn)
             self._game.process_move(move)
             if self._game.is_tied():
                 self._update_display(msg="Tied game!", color="red")
+                self._play_sound(self.tied_sound)
             elif self._game.has_winner():
                 self._highlight_cells()
                 msg = f'Player "{self._game.current_player.label}" won!'
                 color = self._game.current_player.color
                 self._update_display(msg, color)
                 self._update_score_display()
+                self._play_sound(self.win_sound)
             else:
                 self._game.toggle_player()
                 msg = f"{self._game.current_player.label}'s turn"
@@ -136,6 +145,7 @@ class TicTacToeBoard(tk.Tk):
                 button.config(highlightbackground="red")
 
     def reset_board(self):
+        self._play_sound(self.reset_sound)
         self._game.reset_game()
         self._update_display(msg="Tic-Tac-Toe - Ready?")
         self._update_score_display()
@@ -143,6 +153,9 @@ class TicTacToeBoard(tk.Tk):
             button.config(highlightbackground="lightblue")
             button.config(text="")
             button.config(fg="black")
+
+    def _play_sound(self, sound):
+        sound.play()
 
     def _get_score_text(self):
         scores = self._game.scores
