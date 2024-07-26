@@ -147,7 +147,7 @@ class TicTacToeBoard(tk.Tk):
     def reset_board(self):
         self._play_sound(self.reset_sound)
         self._game.reset_game()
-        self._update_display(msg="Tic-Tac-Toe - Ready?")
+        self._update_display(msg="Tic-Tac-Toe - Play Again ")
         self._update_score_display()
         for button in self._cells.keys():
             button.config(highlightbackground="lightblue")
