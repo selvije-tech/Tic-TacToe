@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Folder PATH listing for volume SSD
 Volume serial number is D0F2-6A85
 C:.
@@ -3208,3 +3209,30 @@ C:.
 +---__pycache__
         tic_tac_toe.cpython-311.pyc
         
+=======
+Tic-Tac-Toe/
+├── .git/
+├── .gitignore
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── src/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── game.py
+│   ├── gui.py
+│   ├── sound.py
+├── sounds/
+│   ├── move.wav
+│   ├── reset.mp3
+│   ├── tied.mp3
+│   ├── win.mp3
+├── tests/
+│   ├── __init__.py
+│   ├── test_game.py
+│   ├── test_gui.py
+├── venv/
+│   ├── (virtual environment files)
+├── tic_tac_toe.py
+
+>>>>>>> d4d759ce3d1e707871e7a7783cda6ae5f0b388d2
