@@ -33,7 +33,7 @@ class TicTacToeGame:
         self.scores = {player.label: 0 for player in players}
         self._setup_board()
 
-    def _setup_board(self):
+    def _setup_board(self)->None:
         self._current_moves = [
             [Move(row, col) for col in range(self.board_size)]
             for row in range(self.board_size)
@@ -50,13 +50,13 @@ class TicTacToeGame:
     def toggle_player(self):
         self.current_player = next(self._players)
 
-    def is_valid_move(self, move):
+    def is_valid_move(self, move)->bool:
         row, col = move.row, move.col
         move_was_not_played = self._current_moves[row][col].label == ""
         no_winner = not self._has_winner
         return no_winner and move_was_not_played
 
-    def process_move(self, move):
+    def process_move(self, move)->None:
         row, col = move.row, move.col
         self._current_moves[row][col] = move
         for combo in self._winning_combos:
